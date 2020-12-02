@@ -15,15 +15,15 @@ using namespace std;
 
 template <class T>
 class Sorts {
-	private:
-	void swap(vector<int>&, int, int);
-	void arrayMerge(vector<int>&, vector<int>&,vector<int>&);
-	public:
-  void ordenaSeleccion(vector<int>&);
+private:
+void swap(vector<int>&, int, int);
+void arrayMerge(vector<int>&, vector<int>&,vector<int>&);
+public:
+void ordenaSeleccion(vector<int>&);
 void ordenaBurbuja(vector<int>&);
-  void ordenaMerge(vector<int>&);
-  int busqSecuencial(const vector<int> &, int);
-  int busqBinaria(const vector<int> &, int);
+void ordenaMerge(vector<int>&);
+int busqSecuencial(const vector<int> &, int);
+int busqBinaria(const vector<int> &, int);
 
 };
 
@@ -52,42 +52,6 @@ void Sorts<T>::ordenaSeleccion(vector<int> &vect){
 		}
 	}
 }
-
-void swap(int *xp, int *yp)  
-{  
-    int temp = *xp;  
-    *xp = *yp;  
-    *yp = temp;  
-}  
-  
-void selectionSort(int arr[], int n)  
-{  
-    int i, j, min_idx;  
-  
-    // One by one move boundary of unsorted subarray  
-    for (i = 0; i < n-1; i++)  
-    {  
-        // Find the minimum element in unsorted array  
-        min_idx = i;  
-        for (j = i+1; j < n; j++)  
-        if (arr[j] < arr[min_idx])  
-            min_idx = j;  
-  
-        // Swap the found minimum element with the first element  
-        swap(&arr[min_idx], &arr[i]);  
-    }  
-} 
- 
-  
-/* Function to print an array */
-void printArray(int arr[], int size)  
-{  
-    int i;  
-    for (i=0; i < size; i++)  
-        cout << arr[i] << " ";  
-    cout << endl;  
-}  
- 
 
 template <class T>
 void Sorts<T>::ordenaBurbuja(vector<int> &bubble){
