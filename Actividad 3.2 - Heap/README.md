@@ -1,5 +1,7 @@
 Actividad 3.2 Árbol Heap: Implementando una fila priorizada
+
 Análisis de complejidad
+
 ---- Push -----
 
 Este método agrega un dato a la fila priorizada por lo que su complejidad es de
@@ -22,10 +24,10 @@ su complejidad sería de O(1) en todos los casos
 
 Regre un valor booleano diciendo si la fila está vacía o tiene datos, por lo que
 
-su complejidad sería de O(n)
+su complejidad sería de O(1)
 
 ----- Size ----
 
 Size regresa la cantidad de datos que tiene la fila, al ser solo ún número
 
-que se acumula la complejidad es lineal->O(n) en todos los casos
+que se acumula la complejidad es lineal O(1) en todos los casos
