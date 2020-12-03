@@ -4,6 +4,4 @@
 
 Dicha corrección se encuentra en el readme de la carpeta de dicha actividad líneas indicadas con #
 
-2. Corrección en la implementación de la actividad 3.3 Splay Tree y analisis de complejidad 
 
-de todas las funciones, corrección completa en la carpeta con el mismo nombre.
