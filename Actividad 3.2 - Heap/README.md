@@ -1,4 +1,4 @@
-# Actividad 3.2 Árbol Heap: Implementando una fila priorizada
+## Actividad 3.2 Árbol Heap: Implementando una fila priorizada
 
 Análisis de complejidad
 
@@ -20,13 +20,13 @@ El método Top regresa el valor del dato que está con mayor prioridad, por lo q
 
 su complejidad sería de O(1) en todos los casos
 
----- Empty ----
+#---- Empty ----
 
 Regre un valor booleano diciendo si la fila está vacía o tiene datos, por lo que
 
 su complejidad sería de O(1)
 
------ Size ----
+#----- Size ----
 
 Size regresa la cantidad de datos que tiene la fila, al ser solo ún número
 
