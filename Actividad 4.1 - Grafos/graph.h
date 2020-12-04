@@ -1,307 +1,305 @@
 #ifndef GRAPH_H_
-#define GRAPH_H_
+#define	GRAPH_H_
 
-#include <string>
-#include <iostream>
-#include <vector>
-#include <iterator>
-#include <fstream>
 #include <stack>
 #include <queue>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <iterator>
 
 using namespace std;
 
 class Graph {
 private:
-    int nodes;
-    int connections;
-    vector <int>* adjList;
-    int* adjMatrix;
-    string fileName;
-    void readFile();
-    int edjesList;
-    int edjesMat;
-    string result;
-    string res;
-    void addEdjeAdjList(int u, int v);
-    void addEdjeAdjMat(int u, int v);
-    void sortAdjList();
-    void ordenaSeleccion(vector<int>& v);
-    void swapArray(vector<int>& v, int i, int j);
+	int n;
+	int m;
+	int eList;
+	int eMat;
+	string resp;
+	string r;
+	string fname;
+	int* AdjMat;
+	vector <int>* AdjList;
 
-    string printDFS(bool visited[], int first, int goal, int parent[], vector <int>& path);
-    string printBFS(bool visit[], int first, int goal, int parent[], int path[], vector <int> visitedInOrder);
-    void DFShelper(int first, int current, int goal, bool visited[], int parent[], stack <int>& stack, vector <int>& path);
-    void BFShelper(int first, int current, int goal, bool visited[], int parent[], queue <int>& queue, int path[], vector <int> visitedInOrder);
+	void getData();
+	void swap(vector<int>& vect, int i, int j);
+	void sortList();
+	void selectionSort(vector<int>& vect);
+	void addEadjList(int, int);
+	void addEadjMat(int, int);
+	string printDFS(bool visited[], int f, int m, int parent[], vector <int>& cam);
+	string printBFS(bool visit[], int f, int m, int parent[], int cam[], vector <int> VIO);
+	void DFShel(int f, int initial, int m, bool visited[], int parent[], stack <int>& s, vector <int>& cam);
+	void BFShel(int f, int initial, int m, bool visited[], int parent[], queue <int>& q, int cam[], vector <int> VIO);
 
 public:
-    void loadGraphMat(string f, int n, int c);
-    void loadGraphList(string f, int n, int c);
-    string printAdjList();
-    string printAdjMat();
-    string DFS(int current, int goal);
-    string BFS(int current, int goal);
+	void loadGraphMat(string, int, int);
+	void loadGraphList(string, int, int);
+	string BFS(int, int);
+	string DFS(int, int);
+	string printAdjMat();
+	string printAdjList();
 };
 
-void Graph::loadGraphMat(string f, int n, int c) {
-    fileName = f;
-    nodes = n;
-    connections = c;
-    edjesMat = 0;
-    adjMatrix = new int[nodes * connections];
-
-    for (int i = 0; i < nodes * connections; i++) {
-        adjMatrix[i] = 0;
-    }
-
-    readFile();
+void Graph::swap(vector<int>& vect, int i, int j) {
+	int sus = vect[i];
+	vect[i] = vect[j];
+	vect[j] = sus;
 }
 
-void Graph::loadGraphList(string f, int n, int c) {
-    fileName = f;
-    nodes = n;
-    connections = c;
-    adjList = new vector <int>[nodes];
-    edjesList = 0;
+void Graph::selectionSort(vector<int>& vect) {
+	int band;
+
+	for (int i = vect.size() - 1; i > 0; i--) {
+		band = 0;
+		for (int j = 1; j <= i; j++) {
+			if (vect[j] > vect[band]) {
+				band = j;
+			}
+		}
+
+		if (band != i) {
+			swap(vect, i, band);
+		}
+	}
 }
 
-void Graph::addEdjeAdjMat(int u, int v) {
-    adjMatrix[u * nodes + v] = 1;
-    adjMatrix[v * nodes + u] = 1;
-    edjesMat++;
+void Graph::sortList() {
+	for (int i = 0; i < n; i++)
+		selectionSort(AdjList[i]);
 }
 
-void Graph::addEdjeAdjList(int u, int v) {
-    adjList[u].push_back(v);
-    adjList[v].push_back(u);
-    edjesList++;
+void Graph::addEadjMat(int vertex, int arch) {
+	AdjMat[arch * n + vertex] = 1;
+	AdjMat[vertex * n + arch] = 1;
+	eMat++;
 }
 
-void Graph::readFile() {
-    string first;
-    string second;
-    int u;
-    int v;
-    int iline;
-    string line;
-    ifstream file(fileName);
-    if (file.is_open()) {
-        int i = 0;
-        while (getline(file, line)) {
-            first = line.substr(1);
-            second = line.substr(4);
-            u = stoi(first);
-            v = stoi(second);
-            addEdjeAdjMat(u, v);
-            addEdjeAdjList(u, v);
-            i++;
-        }
-        file.close();
-    }
-    sortAdjList();
+void Graph::addEadjList(int n, int m) {
+	AdjList[n].push_back(m);
+	AdjList[m].push_back(n);
+	eList++;
+}
+
+void Graph::getData() {
+	string begin;
+	string after;
+	int m;
+	int n;
+	string word;
+
+	ifstream infile(fname);
+	if (infile.is_open()) {
+		int i = 0;
+		while (getline(infile, word)) {
+			begin = word.substr(1);
+			after = word.substr(4);
+			m = stoi(begin);
+			n = stoi(after);
+			addEadjMat(m, n);
+			addEadjList(m, n);
+			i++;
+		}
+		infile.close();
+	}
+	sortList();
+}
+
+void Graph::loadGraphMat(string f, int vertex, int arch) {
+	fname = f;
+	n = vertex;
+	m = arch;
+	eMat = 0;
+	AdjMat = new int[n * m];
+
+	for (int i = 0; i < n * m;i++) {
+		AdjMat[i] = 0;
+	}
+
+	getData();
+}
+
+void Graph::loadGraphList(string f, int nodes, int vertex) {
+	fname = f;
+	n = nodes;
+	m = vertex;
+	AdjList = new vector<int>[nodes];
+	eList = 0;
+}
+
+string Graph::printBFS(bool visit[], int f, int m, int parent[], int cam[], vector <int> VIO) {
+	string pBFS = "visited: ";
+	for (int i = 0; i < VIO.size();i++) {
+		pBFS = pBFS + to_string(VIO[i]);
+		pBFS = pBFS + " ";
+	}
+	pBFS = pBFS + "path:";
+	vector <int> a;
+	a.push_back(m);
+	while (m != f) {
+		a.push_back(parent[m]);
+		m = parent[m];
+	}
+
+	for (int i = a.size() - 1; i >= 0; i--) {
+		pBFS = pBFS + " ";
+		pBFS = pBFS + to_string(a[i]);
+	}
+	return pBFS;
+}
+
+string Graph::printDFS(bool visited[], int f, int m, int parent[], vector <int>& cam) {
+	string pDFS = "visited: ";
+	for (int i = 0; i < cam.size() - 1;i++) {
+		pDFS = pDFS + to_string(cam[i]);
+		pDFS = pDFS + " ";
+	}
+	pDFS = pDFS + "path:";
+	vector <int> a;
+	a.push_back(m);
+	while (m != f) {
+		a.push_back(parent[m]);
+		m = parent[m];
+	}
+
+	for (int i = a.size() - 1; i >= 0; i--) {
+		pDFS = pDFS + " ";
+		pDFS = pDFS + to_string(a[i]);
+	}
+	return pDFS;
+}
+
+void Graph::BFShel(int f, int initial, int m, bool visit[], int parent[], queue <int>& q, int cam[], vector <int> VIO) {
+	if (initial == m)
+		r = printBFS(visit, f, m, parent, cam, VIO);
+
+	else if (q.empty())
+
+		cout << "BSF Not Found";
+
+	else {
+		initial = q.front();
+		q.pop();
+		visit[initial] = true;
+		VIO.push_back(initial);
+		for (int i = 0; i < AdjList[initial].size();i++) {
+			if (!visit[AdjList[initial][i]]) {
+				q.push(AdjList[initial][i]);
+				if (cam[AdjList[initial][i]] == -1) {
+					cam[AdjList[initial][i]] = initial;
+					parent[AdjList[initial][i]] = initial;
+				}
+			}
+		}
+		BFShel(f, initial, m, visit, parent, q, cam, VIO);
+	}
+}
+
+void Graph::DFShel(int f, int initial, int m, bool visited[], int parent[], stack <int>& s, vector <int>& cam) {
+	if (initial == m) {
+		resp = printDFS(visited, f, m, parent, cam);
+	}
+
+	else if (s.empty()) {
+		cout << "DFS Not Found";
+	}
+
+	else {
+		parent[s.top()] = initial;
+		initial = s.top();
+		s.pop();
+		visited[initial] = true;
+		for (int i = 0; i < AdjList[initial].size();i++) {
+			if (!visited[AdjList[initial][i]]) {
+				s.push(AdjList[initial][i]);
+				cam.push_back(AdjList[initial][i]);
+				DFShel(f, initial, m, visited, parent, s, cam);
+			}
+		}
+	}
+}
+
+string Graph::BFS(int inicial, int meta) {
+	vector <int> VIO;
+	queue <int> q;
+	bool* visit = new bool[n];
+	int* cam = new int[n];
+	int* parent = new int[n];
+	int f = inicial;
+	cam[0] = inicial;
+	q.push(f);
+
+	for (int i = 0; i < n; i++) {
+		visit[i] = false;
+	}
+
+	for (int i = 0; i < n; i++) {
+		parent[i] = false;
+	}
+
+	for (int i = 0; i < n; i++) {
+		cam[i] = -1;
+	}
+
+	BFShel(f, inicial, meta, visit, parent, q, cam, VIO);
+	return r;
+}
+
+string Graph::DFS(int inicial, int meta) {
+	vector <int> cam;
+	stack <int> s;
+	bool* visited = new bool[n];
+	int* parent = new int[n];
+	int f = inicial;
+	s.push(f);
+	cam.push_back(inicial);
+
+	for (int i = 0; i < n; i++) {
+		visited[i] = false;
+	}
+
+	for (int i = 0; i < n; i++) {
+		parent[i] = false;
+	}
+
+	DFShel(f, inicial, meta, visited, parent, s, cam);
+	return resp;
 }
 
 string Graph::printAdjList() {
-    string list;
-    int number;
-    string cadena;
-    for (int i = 0; i < nodes; i++) {
-        list = list + "vertex ";
-        list = list + to_string(i);
-        list = list + " : ";
-        for (int j = 0; j < adjList[i].size(); j++) {
-            int number = adjList[i][j];
-            string cadena = to_string(number);
-            list = list + cadena;
-            list = list + " ";
-        }
-    }
-    return list;
+	int num;
+	string AdjL;
+	string str;
+
+	for (int i = 0;i < n;i++) {
+		AdjL = AdjL + "vertex ";
+		AdjL = AdjL + to_string(i);
+		AdjL = AdjL + " : ";
+		for (int k = 0; k < AdjList[i].size();k++) {
+			int num = AdjList[i][k];
+			string str = to_string(num);
+			AdjL = AdjL + str;
+			AdjL = AdjL + " ";
+		}
+	}
+	return AdjL;
 }
 
 string Graph::printAdjMat() {
-    string matrix;
-    int number;
-    string cadena;
-    for (int i = 0; i < nodes; i++) {
-        for (int j = 0; j < nodes; j++) {
-            int number = adjMatrix[i * nodes + j];
-            string cadena = to_string(number);
-            matrix = matrix + cadena;
-            matrix = matrix + " ";
-        }
-    }
-    return matrix;
-}
-
-void Graph::sortAdjList() {
-    for (int i = 0; i < nodes; i++)
-        ordenaSeleccion(adjList[i]);
-}
-
-void Graph::ordenaSeleccion(vector<int>& v) {
-    for (int i = 0; i < v.size() - 1; i++) {
-        int min = i;
-        for (int j = i + 1; j < v.size(); j++) {
-            if (v[j] < v[min])
-                min = j;
-        }
-        swapArray(v, i, min);
-    }
-}
-
-void Graph::swapArray(vector<int>& v, int i, int j) {
-    int temp = v[i];
-    v[i] = v[j];
-    v[j] = temp;
-}
-
-string Graph::DFS(int current, int goal) {
-    int first = current;
-    bool* visited = new bool[nodes];
-    int* parent = new int[nodes];
-    stack <int> stack;
-    vector <int> path;
-    stack.push(first);
-    path.push_back(current);
-
-    for (int i = 0; i < nodes; i++) {
-        visited[i] = false;
-    }
-
-    for (int i = 0; i < nodes; i++) {
-        parent[i] = 0;
-    }
-
-    DFShelper(first, current, goal, visited, parent, stack, path);
-    return result;
-}
-
-void Graph::DFShelper(int first, int current, int goal, bool visited[], int parent[], stack <int>& stack, vector <int>& path) {
-    if (current == goal) {
-        result = printDFS(visited, first, goal, parent, path);
-
-    }
-
-    else if (stack.empty()) {
-        cout << "not found";
-    }
-
-    else {
-        parent[stack.top()] = current;
-        current = stack.top();
-        stack.pop();
-        visited[current] = true;
-        for (int i = 0; i < adjList[current].size(); i++) {
-            if (!visited[adjList[current][i]]) {
-                stack.push(adjList[current][i]);
-                path.push_back(adjList[current][i]);
-                DFShelper(first, current, goal, visited, parent, stack, path);
-            }
-
-
-        }
-    }
-
-
-}
-
-string Graph::BFS(int current, int goal) {
-    int first = current;
-    bool* visit = new bool[nodes];
-    int* parent = new int[nodes];
-    queue <int> queue;
-    int* path = new int[nodes];
-    queue.push(first);
-    path[0] = current;
-    vector <int> visitedInOrder;
-
-
-    for (int i = 0; i < nodes; i++) {
-        visit[i] = false;
-    }
-
-
-    for (int i = 0; i < nodes; i++) {
-        parent[i] = false;
-    }
-
-    for (int i = 0; i < nodes; i++) {
-        path[i] = -1;
-    }
-
-    BFShelper(first, current, goal, visit, parent, queue, path, visitedInOrder);
-    return res;
-}
-
-void Graph::BFShelper(int first, int current, int goal, bool visit[], int parent[], queue <int>& queue, int path[], vector <int> visitedInOrder) {
-    if (current == goal)
-        res = printBFS(visit, first, goal, parent, path, visitedInOrder);
-
-    else if (queue.empty())
-        cout << "not found";
-
-    else {
-        current = queue.front();
-        queue.pop();
-        visit[current] = true;
-        visitedInOrder.push_back(current);
-        for (int i = 0; i < adjList[current].size(); i++) {
-            if (!visit[adjList[current][i]]) {
-                queue.push(adjList[current][i]);
-                if (path[adjList[current][i]] == -1) {
-                    path[adjList[current][i]] = current;
-                    parent[adjList[current][i]] = current;
-                }
-            }
-        }
-        BFShelper(first, current, goal, visit, parent, queue, path, visitedInOrder);
-    }
-}
-
-string Graph::printDFS(bool visited[], int first, int goal, int parent[], vector <int>& path) {
-    int last = goal;
-    string print = "visited: ";
-    for (int i = 0; i < path.size() - 1; i++) {
-        print = print + to_string(path[i]);
-        print = print + " ";
-    }
-    print = print + "path:";
-    vector <int> qu;
-    qu.push_back(goal);
-    while (goal != first) {
-        qu.push_back(parent[goal]);
-        goal = parent[goal];
-    }
-
-    for (int i = qu.size() - 1; i >= 0; i--) {
-        print = print + " ";
-        print = print + to_string(qu[i]);
-    }
-    return print;
-}
-
-string Graph::printBFS(bool visit[], int first, int goal, int parent[], int path[], vector <int> visitedInOrder) {
-    int last = goal;
-    string print = "visited: ";
-    for (int i = 0; i < visitedInOrder.size(); i++) {
-        print = print + to_string(visitedInOrder[i]);
-        print = print + " ";
-    }
-
-    print = print + "path:";
-    vector <int> qu;
-    qu.push_back(goal);
-    while (goal != first) {
-        qu.push_back(parent[goal]);
-        goal = parent[goal];
-    }
-
-    for (int i = qu.size() - 1; i >= 0; i--) {
-        print = print + " ";
-        print = print + to_string(qu[i]);
-    }
-    return print;
+	string pAdjM;
+	int num;
+	string str;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			int num = AdjMat[i * n + j];
+			string str = to_string(num);
+			pAdjM = pAdjM + str;
+			pAdjM = pAdjM + " ";
+		}
+	}
+	return pAdjM;
 }
 
 #endif
